@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "plumes"
 version = "0.1.0"
-description = "Simple Twitter CLI for day-to-day tasks and social media hygiene"
+description = "Simple Twitter CLI for day-to-day social media hygiene"
 authors = ["Nicholas Nadeau <nicholas.nadeau@gmail.com>"]
 license = "MIT"
 
