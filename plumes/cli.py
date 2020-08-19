@@ -194,6 +194,90 @@ def prune_friends(  # noqa C901
             pu.get_twitter_api().destroy_friendship(u)
 
 
+def prune_tweets(  # noqa C901
+    path: str,
+    days: Optional[int] = None,
+    min_likes: Optional[int] = None,
+    max_likes: Optional[int] = None,
+    min_retweets: Optional[int] = None,
+    max_retweets: Optional[int] = None,
+    min_ratio: Optional[float] = None,
+    max_ratio: Optional[float] = None,
+    protect_favorited: bool = False,
+    execute: bool = False,
+):
+    """Prune tweets given criteria
+
+    Args:
+        days (Optional[int], optional): Days since tweeted. Defaults to None.
+        min_likes (Optional[int], optional): Min number of favourites. Defaults to None.
+        max_likes (Optional[int], optional): Max number of favourites. Defaults to None.
+        min_retweets (Optional[int], optional): Min number of retweets. Defaults to None.
+        max_retweets (Optional[int], optional): Max number of retweets. Defaults to None.
+        min_ratio (Optional[float], optional): Min Twitter like-retweet ratio. Defaults to None.
+        max_ratio (Optional[float], optional): Max Twitter like-retweet ratio. Defaults to None.
+        protect_favorited (bool, optional): Protect and don't prune tweets that were self-liked. Defaults to False.
+        execute (bool, optional): Actually perform the prune. If False, only a dry-run is performed. Defaults to False.
+    """
+    # load data
+    path = Path(path)
+    with open(path) as f:
+        tweets = json.load(f)
+    LOGGER.info(f"Loaded {len(tweets)} tweets")
+
+    # init set of users to prune
+    prunable = set()
+
+    # iterate and identify prunable users
+    for t in tweets:
+        if days:
+            today = datetime.date.today()
+            limit = today - datetime.timedelta(days=days)
+            tweet_dt = eu.parsedate_to_datetime(t["created_at"])
+            if tweet_dt.date() < limit:
+                LOGGER.info(f"\"{t['text']}\" tweeted on {tweet_dt}")
+                prunable.add(t["id_str"])
+        if min_likes:
+            if t["favorite_count"] < min_likes:
+                LOGGER.info(f"\"{t['text']}\" has {t['favorite_count']} likes")
+                prunable.add(t["id_str"])
+        if max_likes:
+            if t["favorite_count"] > max_likes:
+                LOGGER.info(f"\"{t['text']}\" has {t['favorite_count']} likes")
+                prunable.add(t["id_str"])
+        if min_retweets:
+            if t["retweet_count"] < min_retweets:
+                LOGGER.info(f"\"{t['text']}\" has {t['retweet_count']} retweets")
+                prunable.add(t["id_str"])
+        if max_retweets:
+            if t["retweet_count"] > max_retweets:
+                LOGGER.info(f"\"{t['text']}\" has {t['retweet_count']} retweets")
+                prunable.add(t["id_str"])
+        if min_ratio:
+            actual_ratio = t["favorite_count"] / t["retweet_count"]
+            if actual_ratio < min_ratio:
+                LOGGER.info(f"\"{t['text']}\" has a TLR ratio of {actual_ratio}")
+                prunable.add(t["id_str"])
+        if max_ratio:
+            actual_ratio = t["favorite_count"] / t["retweet_count"]
+            if actual_ratio > max_ratio:
+                LOGGER.info(f"\"{t['text']}\" has a TLR ratio of {actual_ratio}")
+                prunable.add(t["id_str"])
+
+        # must come last
+        # pop pruneable tweets that are self-liked (i.e., favorited)
+        if protect_favorited:
+            if t["favorited"] and (t["id_str"] in prunable):
+                LOGGER.info(f"\"{t['text']}\" is self-liked, protecting tweet")
+                prunable.remove(t["id_str"])
+
+    LOGGER.info(f"Identified {len(prunable)} prunable tweets")
+    if execute:
+        for t in prunable:
+            LOGGER.info(f"Deleting {t}")
+            pu.get_twitter_api().destroy_status(t)
+
+
 def main():
     fire.Fire()
 
