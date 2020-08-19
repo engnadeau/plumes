@@ -161,6 +161,7 @@ def prune_friends(  # noqa C901
                 LOGGER.info(f"{u['screen_name']} has a TFF ratio of {actual_ratio}")
                 prunable.append(u["screen_name"])
 
+    prunable = set(prunable)
     LOGGER.info(f"Identified {len(prunable)} prunable users")
     if execute:
         for u in prunable:
