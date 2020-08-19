@@ -20,6 +20,7 @@
 
 - [Contents](#contents)
 - [Overview](#overview)
+- [Inspiration](#inspiration)
 - [Usage](#usage)
   - [Installation](#installation)
   - [Contributing](#contributing)
@@ -29,6 +30,12 @@
 
 `Plumes` is an open-source Python CLI app for day-to-day social media hygiene.
 It was designed to provide a simple, clear, and concise interface to quickly explore and clean a personal Twitter account.
+
+## Inspiration
+
+[![](media/2020-08-19-12-27-42.png)](https://twitter.com/panzer/status/943935357673861120)
+
+[![](media/2020-08-19-12-31-19.png)](https://twitter.com/chrisalbon/status/1295408107078615041)
 
 ## Usage
 
