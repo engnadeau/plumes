@@ -5,10 +5,6 @@
 check-package:
 	poetry check -v
 
-.PHONY: check-typing
-check-typing:
-	poetry run mypy --strict .
-
 .PHONY: check-format
 check-format:
 	poetry run black --check .
@@ -19,7 +15,7 @@ lint:
 	poetry run flake8 .
 
 .PHONY: check
-check: check-format check-package check-typing lint
+check: check-format check-package lint
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # formatting
