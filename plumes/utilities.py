@@ -49,25 +49,24 @@ def set_output(fname: str, path: Optional[str]):
     return path
 
 
-def get_connected_users(func, screen_name: str, output: Path, total: int):
+def get_tweepy_objects(func, screen_name: str, output: Path, total: int):
     # get users
-    LOGGER.info(f"Fetching {total} users")
-    users = []
+    objs = []
     with tqdm(total=total) as pbar:
-        for f in rate_limit_handler(
+        for o in rate_limit_handler(
             tweepy.Cursor(func, screen_name=screen_name).items(total)
         ):
-            users.append(f)
+            objs.append(o)
             pbar.update(1)
 
     # dump output
-    users_to_json(users=users, path=output)
+    tweepy_to_json(models=objs, path=output)
 
 
-def users_to_json(users: List[tweepy.User], path: Path):
-    users = [u._json for u in users]
+def tweepy_to_json(models: List, path: Path):
+    models = [m._json for m in models]
     with open(path, "w") as f:
-        json.dump(users, f, indent=4)
+        json.dump(models, f, indent=4)
 
 
 def get_user(screen_name: Optional[str], api: tweepy.API):

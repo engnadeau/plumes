@@ -44,7 +44,8 @@ def friends(
     path = pu.set_output(fname=fname, path=output)
 
     # get users
-    pu.get_connected_users(
+    LOGGER.info(f"Fetching {limit} friends")
+    pu.get_tweepy_objects(
         func=api.friends, screen_name=screen_name, output=path, total=limit
     )
 
@@ -74,7 +75,8 @@ def followers(
     path = pu.set_output(fname=fname, path=output)
 
     # get users
-    pu.get_connected_users(
+    LOGGER.info(f"Fetching {limit} followers")
+    pu.get_tweepy_objects(
         func=api.followers, screen_name=screen_name, output=path, total=limit
     )
 
