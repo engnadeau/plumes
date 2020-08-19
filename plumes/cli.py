@@ -81,6 +81,30 @@ def followers(
     )
 
 
+def tweets(
+    screen_name: Optional[str] = None,
+    limit: Optional[int] = None,
+    output: Optional[str] = None,
+):
+    # get api and user object
+    api = pu.get_api()
+    source_user = pu.get_user(screen_name=screen_name, api=api)
+
+    # check limit for progress bar
+    if not limit:
+        limit = source_user.statuses_count
+
+    # ensure output location
+    fname = f"{source_user.screen_name}-tweets.json"
+    path = pu.set_output(fname=fname, path=output)
+
+    # get tweets
+    LOGGER.info(f"Fetching {limit} tweets")
+    pu.get_tweepy_objects(
+        func=api.user_timeline, screen_name=screen_name, output=path, total=limit
+    )
+
+
 def prune_friends(  # noqa C901
     path: str,
     min_followers: Optional[int] = None,
