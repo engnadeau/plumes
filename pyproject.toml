@@ -9,6 +9,8 @@ license = "MIT"
 python = "^3.6.1"
 dynaconf = "^3.1.0"
 tweepy = "^3.9.0"
+fire = "^0.3.1"
+tqdm = "^4.48.2"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^19.10b0", allow-prereleases = true}
