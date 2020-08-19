@@ -141,53 +141,52 @@ def prune_friends(  # noqa C901
     LOGGER.info(f"Loaded {len(users)} users")
 
     # init list of users to prune
-    prunable = []
+    prunable = set()
 
     # iterate and identify prunable users
     for u in users:
         if min_followers:
             if u["followers_count"] < min_followers:
                 LOGGER.info(f"{u['screen_name']} has {u['followers_count']} followers")
-                prunable.append(u["screen_name"])
+                prunable.add(u["screen_name"])
         if max_followers:
             if u["followers_count"] > max_followers:
                 LOGGER.info(f"{u['screen_name']} has {u['followers_count']} followers")
-                prunable.append(u["screen_name"])
+                prunable.add(u["screen_name"])
         if min_friends:
             if u["friends_count"] < min_friends:
                 LOGGER.info(f"{u['screen_name']} has {u['friends_count']} friends")
-                prunable.append(u["screen_name"])
+                prunable.add(u["screen_name"])
         if max_friends:
             if u["friends_count"] > max_friends:
                 LOGGER.info(f"{u['screen_name']} has {u['friends_count']} friends")
-                prunable.append(u["screen_name"])
+                prunable.add(u["screen_name"])
         if days:
             today = datetime.date.today()
             limit = today - datetime.timedelta(days=days)
             last_tweet = eu.parsedate_to_datetime(u["status"]["created_at"])
             if last_tweet.date() < limit:
                 LOGGER.info(f"{u['screen_name']} last tweeted on {last_tweet}")
-                prunable.append(u["screen_name"])
+                prunable.add(u["screen_name"])
         if min_tweets:
             if u["statuses_count"] < min_tweets:
                 LOGGER.info(f"{u['screen_name']} has {u['statuses_count']} tweets")
-                prunable.append(u["screen_name"])
+                prunable.add(u["screen_name"])
         if max_tweets:
             if u["statuses_count"] > max_tweets:
                 LOGGER.info(f"{u['screen_name']} has {u['statuses_count']} tweets")
-                prunable.append(u["screen_name"])
+                prunable.add(u["screen_name"])
         if min_ratio:
             actual_ratio = u["followers_count"] / u["friends_count"]
             if actual_ratio < min_ratio:
                 LOGGER.info(f"{u['screen_name']} has a TFF ratio of {actual_ratio}")
-                prunable.append(u["screen_name"])
+                prunable.add(u["screen_name"])
         if max_ratio:
             actual_ratio = u["followers_count"] / u["friends_count"]
             if actual_ratio > max_ratio:
                 LOGGER.info(f"{u['screen_name']} has a TFF ratio of {actual_ratio}")
-                prunable.append(u["screen_name"])
+                prunable.add(u["screen_name"])
 
-    prunable = set(prunable)
     LOGGER.info(f"Identified {len(prunable)} prunable users")
     if execute:
         for u in prunable:
