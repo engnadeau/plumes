@@ -3,13 +3,17 @@ import email.utils as eu
 import json
 import logging
 import logging.config
+import textwrap
+import webbrowser
 from pathlib import Path
 from typing import Optional
 
 import fire
+import toml
+import tweepy
 
 import plumes.utilities as pu
-from plumes.config import settings
+from plumes.config import settings, user_config_path
 
 logging.config.dictConfig(settings.logging)
 LOGGER = logging.getLogger("plumes")
