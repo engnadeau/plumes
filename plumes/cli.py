@@ -310,45 +310,47 @@ def prune_tweets(  # noqa C901
 
     # iterate and identify prunable users
     for t in tweets:
+        text = textwrap.shorten(t["text"], width=settings.textwrap_width)
+
         if days:
             today = datetime.date.today()
             limit = today - datetime.timedelta(days=days)
             tweet_dt = eu.parsedate_to_datetime(t["created_at"])
             if tweet_dt.date() < limit:
-                LOGGER.info(f"\"{t['text']}\" tweeted on {tweet_dt}")
+                LOGGER.info(f'"{text}" tweeted on {tweet_dt.date()}')
                 prunable.add(t["id_str"])
         if min_likes:
             if t["favorite_count"] < min_likes:
-                LOGGER.info(f"\"{t['text']}\" has {t['favorite_count']} likes")
+                LOGGER.info(f"\"{text}\" has {t['favorite_count']} likes")
                 prunable.add(t["id_str"])
         if max_likes:
             if t["favorite_count"] > max_likes:
-                LOGGER.info(f"\"{t['text']}\" has {t['favorite_count']} likes")
+                LOGGER.info(f"\"{text}\" has {t['favorite_count']} likes")
                 prunable.add(t["id_str"])
         if min_retweets:
             if t["retweet_count"] < min_retweets:
-                LOGGER.info(f"\"{t['text']}\" has {t['retweet_count']} retweets")
+                LOGGER.info(f"\"{text}\" has {t['retweet_count']} retweets")
                 prunable.add(t["id_str"])
         if max_retweets:
             if t["retweet_count"] > max_retweets:
-                LOGGER.info(f"\"{t['text']}\" has {t['retweet_count']} retweets")
+                LOGGER.info(f"\"{text}\" has {t['retweet_count']} retweets")
                 prunable.add(t["id_str"])
         if min_ratio:
             actual_ratio = t["favorite_count"] / t["retweet_count"]
             if actual_ratio < min_ratio:
-                LOGGER.info(f"\"{t['text']}\" has a TLR ratio of {actual_ratio}")
+                LOGGER.info(f'"{text}" has a TLR ratio of {actual_ratio}')
                 prunable.add(t["id_str"])
         if max_ratio:
             actual_ratio = t["favorite_count"] / t["retweet_count"]
             if actual_ratio > max_ratio:
-                LOGGER.info(f"\"{t['text']}\" has a TLR ratio of {actual_ratio}")
+                LOGGER.info(f'"{text}" has a TLR ratio of {actual_ratio}')
                 prunable.add(t["id_str"])
 
         # must come last
         # pop pruneable tweets that are self-liked (i.e., favorited)
         if protect_favorited:
             if t["favorited"] and (t["id_str"] in prunable):
-                LOGGER.info(f"\"{t['text']}\" is self-liked, protecting tweet")
+                LOGGER.info(f'"{text}" is self-liked, protecting tweet')
                 prunable.remove(t["id_str"])
 
     LOGGER.info(f"Identified {len(prunable)} prunable tweets")
