@@ -16,6 +16,25 @@
   </p>
 </p>
 
+[![GitHub issues](https://img.shields.io/github/issues/nnadeau/plumes)](https://github.com/nnadeau/plumes/issues)
+[![GitHub forks](https://img.shields.io/github/forks/nnadeau/plumes)](https://github.com/nnadeau/plumes/network)
+[![GitHub stars](https://img.shields.io/github/stars/nnadeau/plumes)](https://github.com/nnadeau/plumes/stargazers)
+[![GitHub license](https://img.shields.io/github/license/nnadeau/plumes)](https://github.com/nnadeau/plumes/blob/master/LICENSE)
+
+[![PyPI Version](https://img.shields.io/pypi/v/plumes.svg)](https://pypi.python.org/pypi/plumes)
+[![PyPI License](https://img.shields.io/pypi/l/plumes.svg)](https://pypi.python.org/pypi/plumes)
+[![PyPI Wheel](https://img.shields.io/pypi/wheel/plumes.svg)](https://pypi.python.org/pypi/plumes)
+[![PyPI Format](https://img.shields.io/pypi/format/plumes.svg)](https://pypi.python.org/pypi/plumes)
+[![PyPI Pythons](https://img.shields.io/pypi/pyversions/plumes.svg)](https://pypi.python.org/pypi/plumes)
+[![PyPI Implementation](https://img.shields.io/pypi/implementation/plumes.svg)](https://pypi.python.org/pypi/plumes)
+
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![Test](https://github.com/nnadeau/plumes/workflows/Test/badge.svg)](https://github.com/nnadeau/plumes/actions)
+[![Release](https://github.com/nnadeau/plumes/workflows/Release/badge.svg)](https://github.com/nnadeau/plumes/actions)
+[![Publish](https://github.com/nnadeau/plumes/workflows/Publish/badge.svg)](https://github.com/nnadeau/plumes/actions)
+
+[![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fnnadeau%2Fplumes)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fnnadeau%2Fplumes)
+
 ## Contents
 
 - [Contents](#contents)
