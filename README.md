@@ -146,13 +146,14 @@ plumes prune_tweets PATH <flags>
 
 # e.g.,
 plumes tweets --output "tweets.json"
-plumes prune_tweets "tweets.json" --days 60 --execute
+plumes prune_tweets "tweets.json" --days 60 --protect_favorited --execute
 ```
 
 - `PATH`: path to JSON file exported from `plumes tweets`
 - Optional flags:
   - `--execute`: actually perform the pruning process, else a dry-run is performed
   - `--days`: prune age of tweet
+  - `--protect_favorited`: don't prune self-liked tweets
   - `--min_likes` / `--max_likes`: prune by number of likes
   - `--min_retweets` / `--max_retweets`: prune by number of retweets
   - `--min_ratio` / `--max_ratio`: prune by Twitter like-retweet ratio
