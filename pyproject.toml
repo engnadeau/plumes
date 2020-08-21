@@ -4,6 +4,35 @@ version = "0.1.0"
 description = "Simple Twitter CLI for day-to-day social media hygiene"
 authors = ["Nicholas Nadeau <nicholas.nadeau@gmail.com>"]
 license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/nnadeau/plumes"
+repository = "https://github.com/nnadeau/plumes"
+documentation = "https://github.com/nnadeau/plumes"
+keywords = ["twitter", "cli", "api", "automation", "cron"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Other Audience",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: Microsoft",
+    "Operating System :: OS Independent",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: POSIX",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: Implementation :: CPython"
+    "Programming Language :: Python",
+    "Topic :: Communications",
+    "Topic :: Internet",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering",
+]
 
 [tool.poetry.dependencies]
 python = "^3.6.1"
@@ -20,7 +49,6 @@ isort = "^5.4.2"
 flake8 = "^3.8.3"
 rope = "^0.17.0"
 pytest = "^6.0.1"
-
 
 [tool.poetry.scripts]
 plumes = "plumes.cli:main"
