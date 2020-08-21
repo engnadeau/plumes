@@ -46,6 +46,39 @@ def init(force: bool = False):
 
 
 def check_config():
+    """Check and validate the current configuation.
+    """
+    # check env variables
+    LOGGER.info("Checking config settings")
+    is_valid_config = True
+    for k in settings.default.config:
+        if k in settings.as_dict():
+            LOGGER.info(f"{k.upper()} found in settings")
+        else:
+            LOGGER.warning(f"{k.upper()} not found in settings!")
+            is_valid_config = False
+
+    # special message if a bad config is detected
+    bad_config_message = (
+        "Invalid configuration. "
+        f"Please visit {settings.project_homepage} for more info. "
+        f"Please visit {settings.twitter_dev_page} for your API tokens."
+    )
+    if not is_valid_config:
+        LOGGER.warning(bad_config_message)
+        return
+
+    # check authentication
+    LOGGER.info("Checking Twitter authentication")
+    try:
+        api = pu.get_api()
+        me = api.me()
+        LOGGER.info(f"Successfully authenticated as {me.screen_name}")
+    except tweepy.error.TweepError:
+        LOGGER.warning("Invalid authentication values!")
+        LOGGER.warning(bad_config_message)
+
+
 def view_config():
     """Print the current configuration
     """
