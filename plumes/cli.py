@@ -159,6 +159,13 @@ def tweets(
     limit: Optional[int] = None,
     output: Optional[str] = None,
 ):
+    """Get JSON array of tweets
+
+    Args:
+        screen_name (Optional[str], optional): Target user's screen name (i.e., Twitter handle). If none is given, authenticated user is used. Defaults to None.
+        limit (Optional[int], optional): Max number of users to fetch. Defaults to None.
+        output (Optional[str], optional): Output path for JSON file. Defaults to None.
+    """
     # get api and user object
     api = pu.get_api()
     source_user = pu.get_user(screen_name=screen_name, api=api)
