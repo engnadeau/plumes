@@ -1,4 +1,13 @@
 sleep_time = 905 # rate limit sleep; 15min + buffer
+textwrap_width = 30
+project_homepage = "https://github.com/nnadeau/plumes"
+twitter_dev_page = "https://developer.twitter.com/en/apps"
+
+[default.config]
+CONSUMER_KEY = ""
+CONSUMER_SECRET = ""
+ACCESS_TOKEN = ""
+ACCESS_TOKEN_SECRET = ""
 
 [logging]
 version = 1
