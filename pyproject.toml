@@ -12,6 +12,7 @@ tweepy = "^3.9.0"
 fire = "^0.3.1"
 tqdm = "^4.48.2"
 python-box = "^5.1.0"
+toml = "^0.10.1"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^19.10b0", allow-prereleases = true}
