@@ -46,7 +46,17 @@ def init(force: bool = False):
 
 
 def check_config():
-    print(json.dumps(settings.as_dict(), indent=4, sort_keys=True))
+def view_config():
+    """Print the current configuration
+    """
+    print(
+        json.dumps(
+            settings.as_dict(),
+            indent=4,
+            sort_keys=True,
+            default=lambda o: "<not serializable>",
+        )
+    )
 
 
 def friends(
