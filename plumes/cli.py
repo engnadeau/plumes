@@ -19,6 +19,32 @@ logging.config.dictConfig(settings.logging)
 LOGGER = logging.getLogger("plumes")
 
 
+def init(force: bool = False):
+    """Initialize your plumes configuration
+
+    Args:
+        force (bool, optional): Force overwrite of existing config file. Defaults to False.
+    """
+    # path exists and force option wasn't used
+    if not force and user_config_path.exists():
+        LOGGER.info(
+            f"{user_config_path.resolve()} exists. Please use the `--force` flag if you want to overwrite."
+        )
+    else:
+        LOGGER.info(f"Creating template config file: {user_config_path.resolve()}")
+        with open(user_config_path, "w") as f:
+            toml.dump(settings.default.config, f)
+        LOGGER.info(
+            (
+                "Blank configuration created. "
+                f"Please visit {settings.project_homepage} for more info. "
+                f"Please visit {settings.twitter_dev_page} for your API tokens."
+            )
+        )
+        webbrowser.open_new_tab(settings.project_homepage)
+        webbrowser.open_new_tab(settings.twitter_dev_page)
+
+
 def check_config():
     print(json.dumps(settings.as_dict(), indent=4, sort_keys=True))
 
