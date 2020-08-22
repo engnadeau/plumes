@@ -61,9 +61,10 @@ It was designed to provide a simple, clear, and concise interface to quickly exp
 
 ## Inspiration
 
-[![](media/tweet-panzer.png)](https://twitter.com/panzer/status/943935357673861120)
+[![panzer tweet](https://raw.githubusercontent.com/nnadeau/plumes/master/media/tweet-panzer.png)](https://twitter.com/panzer/status/943935357673861120)
 
-[![](media/tweet-chrisalbon.png)](https://twitter.com/chrisalbon/status/1295408107078615041)
+[![chrisalbon tweet](https://raw.githubusercontent.com/nnadeau/plumes/master/media/tweet-chrisalbon.png)](https://twitter.com/chrisalbon/status/1295408107078615041)
+
 
 ## Installation
 
@@ -92,7 +93,7 @@ plumes friends <flags>
   - `--limit`: max number of users to export
   - `--output`: alternative output path
 
-![](media/terminal-friends.gif)
+![Plumes friends gif](https://raw.githubusercontent.com/nnadeau/plumes/master/media/terminal-friends.gif)
 
 ### Export Your Followers
 
@@ -116,7 +117,7 @@ plumes tweets <flags>
   - `--limit`: max number of tweets to export
   - `--output`: alternative output path
 
-![](media/terminal-tweets.gif)
+![Plumes tweet gif](https://raw.githubusercontent.com/nnadeau/plumes/master/media/terminal-tweets.gif)
 
 ### Prune Your Friends
 
@@ -137,7 +138,7 @@ plumes prune_friends "friends.json" --min_followers 100 --execute
   - `--min_tweets` / `--max_tweets`: prune by number of tweets
   - `--min_ratio` / `--max_ratio`: prune by Twitter follower-friend (TFF) ratio
 
-![](media/terminal-prune-friends.gif)
+![Prune friends gif](https://raw.githubusercontent.com/nnadeau/plumes/master/media/terminal-prune-friends.gif)
 
 ### Prune Your Tweets
 
@@ -165,16 +166,16 @@ plumes prune_tweets "tweets.json" --days 60 --protect_favorited --execute
 - Navigate to the [Twitter Dev Portal](https://developer.twitter.com/en/apps)
 - Click `Create an app`
 
-  ![](media/2020-08-20-09-11-05.png)
+  ![Twitter app link](https://raw.githubusercontent.com/nnadeau/plumes/master/media/2020-08-20-09-11-05.png)
 
 - Fill out the forms
 - Navigate to `Keys and tokens`
 
-  ![](media/2020-08-20-09-12-34.png)
+  ![Tokens link](https://raw.githubusercontent.com/nnadeau/plumes/master/media/2020-08-20-09-12-34.png)
 
 - Copy the values for `API key`, `API secret key`, `Access token`, and `Access token secret`
 
-  ![](media/2020-08-20-09-13-24.png)
+  ![Keys and tokens](https://raw.githubusercontent.com/nnadeau/plumes/master/media/2020-08-20-09-13-24.png)
 
 ### Configuring `plumes`
 
