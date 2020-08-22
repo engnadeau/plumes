@@ -49,12 +49,14 @@ def set_output(fname: str, path: Optional[str]):
     return path
 
 
-def get_tweepy_objects(func, screen_name: str, output: Path, total: int):
+def get_tweepy_objects(
+    func, screen_name: str, output: Path, total: int, count: int = 200
+):
     # get users
     objs = []
     with tqdm(total=total) as pbar:
         for o in rate_limit_handler(
-            tweepy.Cursor(func, screen_name=screen_name).items(total)
+            tweepy.Cursor(func, screen_name=screen_name, count=count).items(total)
         ):
             objs.append(o)
             pbar.update(1)
