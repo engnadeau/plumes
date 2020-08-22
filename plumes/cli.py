@@ -271,7 +271,7 @@ def prune_friends(  # noqa C901
     if execute:
         for u in prunable:
             LOGGER.info(f"Unfollowing {u}")
-            pu.get_twitter_api().destroy_friendship(u)
+            pu.get_api().destroy_friendship(u)
 
 
 def prune_tweets(  # noqa C901
@@ -357,7 +357,7 @@ def prune_tweets(  # noqa C901
     if execute:
         for t in prunable:
             LOGGER.info(f"Deleting {t}")
-            pu.get_twitter_api().destroy_status(t)
+            pu.get_api().destroy_status(t)
 
 
 def main():
