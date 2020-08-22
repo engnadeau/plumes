@@ -63,7 +63,6 @@ It was designed to provide a simple, clear, and concise interface to quickly exp
 
 [![panzer tweet](https://raw.githubusercontent.com/nnadeau/plumes/master/media/tweet-panzer.png)](https://twitter.com/panzer/status/943935357673861120)
 
-
 [![chrisalbon tweet](https://raw.githubusercontent.com/nnadeau/plumes/master/media/tweet-chrisalbon.png)](https://twitter.com/chrisalbon/status/1295408107078615041)
 
 
