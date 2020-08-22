@@ -84,6 +84,8 @@ plumes init
 
 ### Export Your Friends
 
+Extract friends ordered in which they were added:
+
 ```bash
 plumes friends <flags>
 ```
@@ -97,6 +99,8 @@ plumes friends <flags>
 
 ### Export Your Followers
 
+Extract followers ordered in which they were added:
+
 ```bash
 plumes followers <flags>
 ```
@@ -107,6 +111,8 @@ plumes followers <flags>
   - `--output`: alternative output path
 
 ### Export Your Tweets
+
+Extract tweets ordered in by most recent:
 
 ```bash
 plumes tweets <flags>
