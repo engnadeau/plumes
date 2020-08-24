@@ -359,6 +359,7 @@ def prune_tweets(  # noqa C901
             LOGGER.info(f"Deleting {t}")
             pu.get_api().destroy_status(t)
 
+
 def view_user(user: str):
     """View a user's raw JSON
 
