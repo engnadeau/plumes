@@ -359,6 +359,22 @@ def prune_tweets(  # noqa C901
             LOGGER.info(f"Deleting {t}")
             pu.get_api().destroy_status(t)
 
+def view_user(user: str):
+    """View a user's raw JSON
+
+    Args:
+        user (str): User's screen name
+    """
+    user = pu.get_api().get_user(user)
+    print(
+        json.dumps(
+            user._json,
+            indent=4,
+            sort_keys=True,
+            default=lambda o: "<not serializable>",
+        )
+    )
+
 
 def main():
     fire.Fire()
