@@ -375,7 +375,6 @@ def audit_tweets(  # noqa C901
             pu.get_api().create_favorite(t)
 
 
-
 def main():
     fire.Fire()
 
