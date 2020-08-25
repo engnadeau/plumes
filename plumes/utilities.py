@@ -16,7 +16,7 @@ def rate_limit_handler(cursor):
     while True:
         try:
             yield cursor.next()
-        except tweepy.RateLimitError:
+        except tweepy.RateLimitError:  # pragma: no cover
             LOGGER.info(f"Rate limit exceeded; sleeping for {settings.sleep_time}s")
             time.sleep(settings.sleep_time)
         except StopIteration:
@@ -35,7 +35,7 @@ def set_output(fname: str, path: Optional[str]):
     if path:
         path = Path(path)
 
-        if not path.exists():
+        if not path.exists():  # pragma: no cover
             path.mkdir(parents=True, exist_ok=True)
 
         if path.is_dir():

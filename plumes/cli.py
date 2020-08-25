@@ -45,7 +45,7 @@ def init(force: bool = False):
         webbrowser.open_new_tab(settings.twitter_dev_page)
 
 
-def check_config():
+def check_config():  # pragma: no cover
     """Check and validate the current configuation.
     """
     # check env variables
@@ -79,7 +79,7 @@ def check_config():
         LOGGER.warning(bad_config_message)
 
 
-def view_config():
+def view_config():  # pragma: no cover
     """Print the current configuration
     """
     print(
@@ -109,7 +109,7 @@ def friends(
     source_user = pu.get_user(screen_name=screen_name, api=api)
 
     # check limit for progress bar
-    if not limit:
+    if not limit:  # pragma: no cover
         limit = source_user.friends_count
 
     # ensure output location
@@ -140,7 +140,7 @@ def followers(
     source_user = pu.get_user(screen_name=screen_name, api=api)
 
     # check limit for progress bar
-    if not limit:
+    if not limit:  # pragma: no cover
         limit = source_user.followers_count
 
     # ensure output location
@@ -171,7 +171,7 @@ def tweets(
     source_user = pu.get_user(screen_name=screen_name, api=api)
 
     # check limit for progress bar
-    if not limit:
+    if not limit:  # pragma: no cover
         limit = source_user.statuses_count
 
     # ensure output location
@@ -268,7 +268,7 @@ def prune_friends(  # noqa C901
                 prunable.add(u["screen_name"])
 
     LOGGER.info(f"Identified {len(prunable)} prunable users")
-    if execute:
+    if execute:  # pragma: no cover
         for u in prunable:
             LOGGER.info(f"Unfollowing {u}")
             pu.get_api().destroy_friendship(u)
@@ -354,15 +354,11 @@ def prune_tweets(  # noqa C901
                 prunable.remove(t["id_str"])
 
     LOGGER.info(f"Identified {len(prunable)} prunable tweets")
-    if execute:
+    if execute:  # pragma: no cover
         for t in prunable:
             LOGGER.info(f"Deleting {t}")
             pu.get_api().destroy_status(t)
 
 
-def main():
+def main():  # pragma: no cover
     fire.Fire()
-
-
-if __name__ == "__main__":
-    pass
