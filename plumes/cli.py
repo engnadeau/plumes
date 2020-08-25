@@ -106,7 +106,7 @@ def friends(
     """
     # get api and user object
     api = pu.get_api()
-    source_user = pu.get_user(screen_name=screen_name, api=api)
+    source_user = pu.get_user(screen_name=screen_name)
 
     # check limit for progress bar
     if not limit:  # pragma: no cover
@@ -137,7 +137,7 @@ def followers(
     """
     # get api and user object
     api = pu.get_api()
-    source_user = pu.get_user(screen_name=screen_name, api=api)
+    source_user = pu.get_user(screen_name=screen_name)
 
     # check limit for progress bar
     if not limit:  # pragma: no cover
@@ -168,7 +168,7 @@ def tweets(
     """
     # get api and user object
     api = pu.get_api()
-    source_user = pu.get_user(screen_name=screen_name, api=api)
+    source_user = pu.get_user(screen_name=screen_name)
 
     # check limit for progress bar
     if not limit:  # pragma: no cover

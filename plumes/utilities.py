@@ -71,9 +71,9 @@ def tweepy_to_json(models: List, path: Path):
         json.dump(models, f, indent=4)
 
 
-def get_user(screen_name: Optional[str], api: tweepy.API):
+def get_user(screen_name: Optional[str] = None):
     if screen_name:
-        user = api.get_user(screen_name)
+        user = get_api().get_user(screen_name)
     else:
-        user = api.me()
+        user = get_api().me()
     return user
