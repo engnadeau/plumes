@@ -375,6 +375,23 @@ def audit_tweets(  # noqa C901
             pu.get_api().create_favorite(t)
 
 
+def view_user(user: str):
+    """View a user's raw JSON
+
+    Args:
+        user (str): User's screen name
+    """
+    user = pu.get_api().get_user(user)
+    print(
+        json.dumps(
+            user._json,
+            indent=4,
+            sort_keys=True,
+            default=lambda o: "<not serializable>",
+        )
+    )
+
+
 def main():
     fire.Fire()
 
