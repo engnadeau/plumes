@@ -49,12 +49,21 @@ isort = "^5.4.2"
 flake8 = "^3.8.3"
 rope = "^0.17.0"
 pytest = "^6.0.1"
+coverage = {extras = ["toml"], version = "^5.2.1"}
+pytest-randomly = "^3.4.1"
 
 [tool.poetry.scripts]
 plumes = "plumes.cli:main"
 
 [tool.black]
 line-length = 88
+
+[tool.coverage.run]
+source = ['plumes']
+
+[tool.coverage.report]
+fail_under = 95
+show_missing = true
 
 [build-system]
 requires = ["poetry>=0.12"]
