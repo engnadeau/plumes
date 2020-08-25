@@ -225,43 +225,43 @@ def prune_friends(  # noqa C901
 
     # iterate and identify prunable users
     for u in users:
-        if min_followers:
+        if min_followers != None:
             if u["followers_count"] < min_followers:
                 LOGGER.info(f"{u['screen_name']} has {u['followers_count']} followers")
                 prunable.add(u["screen_name"])
-        if max_followers:
+        if max_followers != None:
             if u["followers_count"] > max_followers:
                 LOGGER.info(f"{u['screen_name']} has {u['followers_count']} followers")
                 prunable.add(u["screen_name"])
-        if min_friends:
+        if min_friends != None:
             if u["friends_count"] < min_friends:
                 LOGGER.info(f"{u['screen_name']} has {u['friends_count']} friends")
                 prunable.add(u["screen_name"])
-        if max_friends:
+        if max_friends != None:
             if u["friends_count"] > max_friends:
                 LOGGER.info(f"{u['screen_name']} has {u['friends_count']} friends")
                 prunable.add(u["screen_name"])
-        if days:
+        if days != None:
             today = datetime.date.today()
             limit = today - datetime.timedelta(days=days)
             last_tweet = eu.parsedate_to_datetime(u["status"]["created_at"])
             if last_tweet.date() < limit:
                 LOGGER.info(f"{u['screen_name']} last tweeted on {last_tweet}")
                 prunable.add(u["screen_name"])
-        if min_tweets:
+        if min_tweets != None:
             if u["statuses_count"] < min_tweets:
                 LOGGER.info(f"{u['screen_name']} has {u['statuses_count']} tweets")
                 prunable.add(u["screen_name"])
-        if max_tweets:
+        if max_tweets != None:
             if u["statuses_count"] > max_tweets:
                 LOGGER.info(f"{u['screen_name']} has {u['statuses_count']} tweets")
                 prunable.add(u["screen_name"])
-        if min_ratio:
+        if min_ratio != None and u["friends_count"] > 0:
             actual_ratio = u["followers_count"] / u["friends_count"]
             if actual_ratio < min_ratio:
                 LOGGER.info(f"{u['screen_name']} has a TFF ratio of {actual_ratio}")
                 prunable.add(u["screen_name"])
-        if max_ratio:
+        if max_ratio != None and u["friends_count"] > 0:
             actual_ratio = u["followers_count"] / u["friends_count"]
             if actual_ratio > max_ratio:
                 LOGGER.info(f"{u['screen_name']} has a TFF ratio of {actual_ratio}")
@@ -312,35 +312,35 @@ def prune_tweets(  # noqa C901
     for t in tweets:
         text = textwrap.shorten(t["text"], width=settings.textwrap_width)
 
-        if days:
+        if days != None:
             today = datetime.date.today()
             limit = today - datetime.timedelta(days=days)
             tweet_dt = eu.parsedate_to_datetime(t["created_at"])
             if tweet_dt.date() < limit:
                 LOGGER.info(f'"{text}" tweeted on {tweet_dt.date()}')
                 prunable.add(t["id_str"])
-        if min_likes:
+        if min_likes != None:
             if t["favorite_count"] < min_likes:
                 LOGGER.info(f"\"{text}\" has {t['favorite_count']} likes")
                 prunable.add(t["id_str"])
-        if max_likes:
+        if max_likes != None:
             if t["favorite_count"] > max_likes:
                 LOGGER.info(f"\"{text}\" has {t['favorite_count']} likes")
                 prunable.add(t["id_str"])
-        if min_retweets:
+        if min_retweets != None:
             if t["retweet_count"] < min_retweets:
                 LOGGER.info(f"\"{text}\" has {t['retweet_count']} retweets")
                 prunable.add(t["id_str"])
-        if max_retweets:
+        if max_retweets != None:
             if t["retweet_count"] > max_retweets:
                 LOGGER.info(f"\"{text}\" has {t['retweet_count']} retweets")
                 prunable.add(t["id_str"])
-        if min_ratio:
+        if min_ratio != None and t["retweet_count"] > 0:
             actual_ratio = t["favorite_count"] / t["retweet_count"]
             if actual_ratio < min_ratio:
                 LOGGER.info(f'"{text}" has a TLR ratio of {actual_ratio}')
                 prunable.add(t["id_str"])
-        if max_ratio:
+        if max_ratio != None and t["retweet_count"] > 0:
             actual_ratio = t["favorite_count"] / t["retweet_count"]
             if actual_ratio > max_ratio:
                 LOGGER.info(f'"{text}" has a TLR ratio of {actual_ratio}')
