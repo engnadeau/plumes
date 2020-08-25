@@ -4,7 +4,6 @@ import json
 import logging
 import logging.config
 import textwrap
-import webbrowser
 from pathlib import Path
 from typing import Optional
 
@@ -41,8 +40,6 @@ def init(force: bool = False):
                 f"Please visit {settings.twitter_dev_page} for your API tokens."
             )
         )
-        webbrowser.open_new_tab(settings.project_homepage)
-        webbrowser.open_new_tab(settings.twitter_dev_page)
 
 
 def check_config():  # pragma: no cover
