@@ -18,20 +18,26 @@ logging.config.dictConfig(settings.logging)
 LOGGER = logging.getLogger("plumes")
 
 
-def init(force: bool = False):
+def init(force: bool = False, path: Optional[str] = None):
     """Initialize your plumes configuration
 
     Args:
         force (bool, optional): Force overwrite of existing config file. Defaults to False.
     """
+
+    if not path:
+        path = user_config_path
+    else:
+        path = Path(path)
+
     # path exists and force option wasn't used
-    if not force and user_config_path.exists():
+    if not force and path.exists():
         LOGGER.info(
-            f"{user_config_path.resolve()} exists. Please use the `--force` flag if you want to overwrite."
+            f"{path.resolve()} exists. Please use the `--force` flag if you want to overwrite."
         )
     else:
-        LOGGER.info(f"Creating template config file: {user_config_path.resolve()}")
-        with open(user_config_path, "w") as f:
+        LOGGER.info(f"Creating template config file: {path.resolve()}")
+        with open(path, "w") as f:
             toml.dump(settings.default.config, f)
         LOGGER.info(
             (
