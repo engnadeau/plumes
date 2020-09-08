@@ -4,7 +4,6 @@ import json
 import logging
 import logging.config
 import textwrap
-import webbrowser
 from pathlib import Path
 from typing import Optional
 
@@ -19,20 +18,26 @@ logging.config.dictConfig(settings.logging)
 LOGGER = logging.getLogger("plumes")
 
 
-def init(force: bool = False):
+def init(force: bool = False, path: Optional[str] = None):
     """Initialize your plumes configuration
 
     Args:
         force (bool, optional): Force overwrite of existing config file. Defaults to False.
     """
+
+    if not path:
+        path = user_config_path
+    else:
+        path = Path(path)
+
     # path exists and force option wasn't used
-    if not force and user_config_path.exists():
+    if not force and path.exists():  # pragma: no cover
         LOGGER.info(
-            f"{user_config_path.resolve()} exists. Please use the `--force` flag if you want to overwrite."
+            f"{path.resolve()} exists. Please use the `--force` flag if you want to overwrite."
         )
     else:
-        LOGGER.info(f"Creating template config file: {user_config_path.resolve()}")
-        with open(user_config_path, "w") as f:
+        LOGGER.info(f"Creating template config file: {path.resolve()}")
+        with open(path, "w") as f:
             toml.dump(settings.default.config, f)
         LOGGER.info(
             (
@@ -41,11 +46,9 @@ def init(force: bool = False):
                 f"Please visit {settings.twitter_dev_page} for your API tokens."
             )
         )
-        webbrowser.open_new_tab(settings.project_homepage)
-        webbrowser.open_new_tab(settings.twitter_dev_page)
 
 
-def check_config():
+def check_config():  # pragma: no cover
     """Check and validate the current configuation.
     """
     # check env variables
@@ -79,7 +82,7 @@ def check_config():
         LOGGER.warning(bad_config_message)
 
 
-def view_config():
+def view_config():  # pragma: no cover
     """Print the current configuration
     """
     print(
@@ -106,10 +109,10 @@ def friends(
     """
     # get api and user object
     api = pu.get_api()
-    source_user = pu.get_user(screen_name=screen_name, api=api)
+    source_user = pu.get_user(screen_name=screen_name)
 
     # check limit for progress bar
-    if not limit:
+    if not limit:  # pragma: no cover
         limit = source_user.friends_count
 
     # ensure output location
@@ -137,10 +140,10 @@ def followers(
     """
     # get api and user object
     api = pu.get_api()
-    source_user = pu.get_user(screen_name=screen_name, api=api)
+    source_user = pu.get_user(screen_name=screen_name)
 
     # check limit for progress bar
-    if not limit:
+    if not limit:  # pragma: no cover
         limit = source_user.followers_count
 
     # ensure output location
@@ -168,10 +171,10 @@ def tweets(
     """
     # get api and user object
     api = pu.get_api()
-    source_user = pu.get_user(screen_name=screen_name, api=api)
+    source_user = pu.get_user(screen_name=screen_name)
 
     # check limit for progress bar
-    if not limit:
+    if not limit:  # pragma: no cover
         limit = source_user.statuses_count
 
     # ensure output location
@@ -268,23 +271,31 @@ def audit_users(  # noqa C901
             failed_clauses.append(u["favourites_count"] > max_favourites)
 
         if min_ratio is not None:
-            actual_ratio = u["followers_count"] / u["friends_count"]
-            failed_clauses.append(actual_ratio < min_ratio)
+            failed_clauses.append(
+                pu.calculate_tff_ratio(
+                    followers=u["followers_count"], friends=u["friends_count"]
+                )
+                < min_ratio
+            )
 
         if max_ratio is not None:
-            actual_ratio = u["followers_count"] / u["friends_count"]
-            failed_clauses.append(actual_ratio > max_ratio)
+            failed_clauses.append(
+                pu.calculate_tff_ratio(
+                    followers=u["followers_count"], friends=u["friends_count"]
+                )
+                > max_ratio
+            )
 
         if len(failed_clauses) > 0 and all(failed_clauses):
             LOGGER.info(f"Identified {u['screen_name']}")
             identified_users.add(u["screen_name"])
 
     LOGGER.info(f"Identified {len(identified_users)} users")
-    if prune:
+    if prune:  # pragma: no cover
         for u in identified_users:
             LOGGER.info(f"Unfollowing {u}")
             pu.get_api().destroy_friendship(u)
-    if befriend:
+    if befriend:  # pragma: no cover
         for u in identified_users:
             LOGGER.info(f"Following {u}")
             pu.get_api().create_friendship(u)
@@ -350,12 +361,20 @@ def audit_tweets(  # noqa C901
             failed_clauses.append(t["retweet_count"] > max_retweets)
 
         if min_ratio is not None:
-            actual_ratio = t["favorite_count"] / t["retweet_count"]
-            failed_clauses.append(actual_ratio < min_ratio)
+            failed_clauses.append(
+                pu.calculate_like_retweet_ratio(
+                    likes=t["favorite_count"], retweets=t["retweet_count"]
+                )
+                < min_ratio
+            )
 
         if max_ratio is not None:
-            actual_ratio = t["favorite_count"] / t["retweet_count"]
-            failed_clauses.append(actual_ratio > max_ratio)
+            failed_clauses.append(
+                pu.calculate_like_retweet_ratio(
+                    likes=t["favorite_count"], retweets=t["retweet_count"]
+                )
+                > max_ratio
+            )
 
         if self_favorited is not None:
             failed_clauses.append(t["favorited"] == self_favorited)
@@ -365,11 +384,11 @@ def audit_tweets(  # noqa C901
             identified_tweets.add(t["id_str"])
 
     LOGGER.info(f"Identified {len(identified_tweets)} tweets")
-    if prune:
+    if prune:  # pragma: no cover
         for t in identified_tweets:
             LOGGER.info(f"Deleting {t}")
             pu.get_api().destroy_status(t)
-    if favorite:
+    if favorite:  # pragma: no cover
         for t in identified_tweets:
             LOGGER.info(f"Favoriting {t}")
             pu.get_api().create_favorite(t)
@@ -392,5 +411,5 @@ def view_user(user: str):
     )
 
 
-def main():
+def main():  # pragma: no cover
     fire.Fire()

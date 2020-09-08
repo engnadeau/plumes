@@ -14,6 +14,11 @@ check-format:
 lint:
 	poetry run flake8 .
 
+.PHONY: test
+test:
+	poetry run coverage run -m pytest --verbose -Werror
+	poetry run coverage report
+
 .PHONY: check
 check: check-format check-package lint
 
