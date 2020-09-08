@@ -291,11 +291,11 @@ def audit_users(  # noqa C901
             identified_users.add(u["screen_name"])
 
     LOGGER.info(f"Identified {len(identified_users)} users")
-    if prune:
+    if prune:  # pragma: no cover
         for u in identified_users:
             LOGGER.info(f"Unfollowing {u}")
             pu.get_api().destroy_friendship(u)
-    if befriend:
+    if befriend:  # pragma: no cover
         for u in identified_users:
             LOGGER.info(f"Following {u}")
             pu.get_api().create_friendship(u)
@@ -384,11 +384,11 @@ def audit_tweets(  # noqa C901
             identified_tweets.add(t["id_str"])
 
     LOGGER.info(f"Identified {len(identified_tweets)} tweets")
-    if prune:
+    if prune:  # pragma: no cover
         for t in identified_tweets:
             LOGGER.info(f"Deleting {t}")
             pu.get_api().destroy_status(t)
-    if favorite:
+    if favorite:  # pragma: no cover
         for t in identified_tweets:
             LOGGER.info(f"Favoriting {t}")
             pu.get_api().create_favorite(t)
@@ -411,5 +411,5 @@ def view_user(user: str):
     )
 
 
-def main():
+def main():  # pragma: no cover
     fire.Fire()
