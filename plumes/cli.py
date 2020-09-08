@@ -31,7 +31,7 @@ def init(force: bool = False, path: Optional[str] = None):
         path = Path(path)
 
     # path exists and force option wasn't used
-    if not force and path.exists():
+    if not force and path.exists():  # pragma: no cover
         LOGGER.info(
             f"{path.resolve()} exists. Please use the `--force` flag if you want to overwrite."
         )
