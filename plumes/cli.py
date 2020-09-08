@@ -233,19 +233,19 @@ def audit_users(  # noqa C901
     for u in users:
         failed_clauses = []
 
-        if min_followers:
+        if min_followers is not None:
             failed_clauses.append(u["followers_count"] < min_followers)
 
-        if max_followers:
+        if max_followers is not None:
             failed_clauses.append(u["followers_count"] > max_followers)
 
-        if min_friends:
+        if min_friends is not None:
             failed_clauses.append(u["friends_count"] < min_friends)
 
-        if max_friends:
+        if max_friends is not None:
             failed_clauses.append(u["friends_count"] > max_friends)
 
-        if days:
+        if days is not None:
             today = datetime.date.today()
             limit = today - datetime.timedelta(days=days)
             try:
@@ -255,23 +255,23 @@ def audit_users(  # noqa C901
                 # no tweets
                 failed_clauses.append(True)
 
-        if min_tweets:
+        if min_tweets is not None:
             failed_clauses.append(u["statuses_count"] < min_tweets)
 
-        if max_tweets:
+        if max_tweets is not None:
             failed_clauses.append(u["statuses_count"] > max_tweets)
 
-        if min_favourites:
+        if min_favourites is not None:
             failed_clauses.append(u["favourites_count"] < min_favourites)
 
-        if max_favourites:
+        if max_favourites is not None:
             failed_clauses.append(u["favourites_count"] > max_favourites)
 
-        if min_ratio:
+        if min_ratio is not None:
             actual_ratio = u["followers_count"] / u["friends_count"]
             failed_clauses.append(actual_ratio < min_ratio)
 
-        if max_ratio:
+        if max_ratio is not None:
             actual_ratio = u["followers_count"] / u["friends_count"]
             failed_clauses.append(actual_ratio > max_ratio)
 
@@ -331,33 +331,33 @@ def audit_tweets(  # noqa C901
         text = textwrap.shorten(t["text"], width=settings.textwrap_width)
         failed_clauses = []
 
-        if days:
+        if days is not None:
             today = datetime.date.today()
             limit = today - datetime.timedelta(days=days)
             tweet_dt = eu.parsedate_to_datetime(t["created_at"])
             failed_clauses.append(tweet_dt.date() < limit)
 
-        if min_likes:
+        if min_likes is not None:
             failed_clauses.append(t["favorite_count"] < min_likes)
 
-        if max_likes:
+        if max_likes is not None:
             failed_clauses.append(t["favorite_count"] > max_likes)
 
-        if min_retweets:
+        if min_retweets is not None:
             failed_clauses.append(t["retweet_count"] < min_retweets)
 
-        if max_retweets:
+        if max_retweets is not None:
             failed_clauses.append(t["retweet_count"] > max_retweets)
 
-        if min_ratio:
+        if min_ratio is not None:
             actual_ratio = t["favorite_count"] / t["retweet_count"]
             failed_clauses.append(actual_ratio < min_ratio)
 
-        if max_ratio:
+        if max_ratio is not None:
             actual_ratio = t["favorite_count"] / t["retweet_count"]
             failed_clauses.append(actual_ratio > max_ratio)
 
-        if self_favorited:
+        if self_favorited is not None:
             failed_clauses.append(t["favorited"] == self_favorited)
 
         if len(failed_clauses) > 0 and all(failed_clauses):
@@ -394,7 +394,3 @@ def view_user(user: str):
 
 def main():
     fire.Fire()
-
-
-if __name__ == "__main__":
-    pass
