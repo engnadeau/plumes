@@ -43,10 +43,10 @@
 - [Installation](#installation)
 - [Usage](#usage)
   - [Getting Started And Creating Your Authentication Config](#getting-started-and-creating-your-authentication-config)
-  - [Export Your Friends](#export-your-friends)
-  - [Export Your Followers](#export-your-followers)
-  - [Export Your Tweets](#export-your-tweets)
-  - [Prune Your Friends](#prune-your-friends)
+  - [Export Friends](#export-friends)
+  - [Export Followers](#export-followers)
+  - [Export Tweets](#export-tweets)
+  - [Audit Users](#audit-users)
   - [Prune Your Tweets](#prune-your-tweets)
 - [Setting Up Authentication](#setting-up-authentication)
   - [Get Your Twitter API Tokens](#get-your-twitter-api-tokens)
@@ -80,90 +80,132 @@ pip install plumes
 ```bash
 # create your config file
 plumes init
+
+# validate your config file
+plumes check_config
+
+# print your config file (watch out for sensitive tokens!)
+plumes view_config
 ```
 
-### Export Your Friends
+### Export Friends
 
-Extract friends ordered in which they were added:
+[Extract friends](examples/SteveMartinToGo-friends.json) ordered in which they were added:
 
 ```bash
 plumes friends <flags>
+
+# e.g., get the friends of Steve Martin (see data in examples dir)
+plumes friends SteveMartinToGo --limit 100
 ```
 
-- Optional flags:
-  - `--screen_name`: alternative user (defaults to yourself)
-  - `--limit`: max number of users to export
-  - `--output`: alternative output path
+**Arguments**:
+
+- `screen_name` _Optional[str], optional_ - Target user's screen name (i.e., Twitter handle). If none is given, authenticated user is used. Defaults to None.
+- `limit` _Optional[int], optional_ - Max number of users to fetch. Defaults to None.
+- `output` _Optional[str], optional_ - Output path for JSON file. Defaults to None.
 
 ![Plumes friends gif](https://raw.githubusercontent.com/nnadeau/plumes/master/media/terminal-friends.gif)
 
-### Export Your Followers
+### Export Followers
 
-Extract followers ordered in which they were added:
+[Extract followers](examples/alyankovic-followers.json) ordered in which they were added:
 
 ```bash
 plumes followers <flags>
+
+# e.g., get the followers of Al Yankovic (see data in examples dir)
+plumes followers alyankovic --limit 100
 ```
 
-- Optional flags:
-  - `--screen_name`: alternative user (defaults to yourself)
-  - `--limit`: max number of users to export
-  - `--output`: alternative output path
+**Arguments**:
 
-### Export Your Tweets
+- `screen_name` _Optional[str], optional_ - Target user's screen name (i.e., Twitter handle). If none is given, authenticated user is used. Defaults to None.
+- `limit` _Optional[int], optional_ - Max number of users to fetch. Defaults to None.
+- `output` _Optional[str], optional_ - Output path for JSON file. Defaults to None.
 
-Extract tweets ordered in by most recent:
+### Export Tweets
+
+[Extract (and archive) tweets](examples/ConanOBrien-tweets.json) ordered in by most recent:
 
 ```bash
 plumes tweets <flags>
+
+# e.g., get the tweets of Conan O'Brien (see data in examples dir)
+plumes tweets ConanOBrien --limit 100
 ```
 
-- Optional flags:
-  - `--screen_name`: alternative user (defaults to yourself)
-  - `--limit`: max number of tweets to export
-  - `--output`: alternative output path
+**Arguments**:
+
+- `screen_name` _Optional[str], optional_ - Target user's screen name (i.e., Twitter handle). If none is given, authenticated user is used. Defaults to None.
+- `limit` _Optional[int], optional_ - Max number of users to fetch. Defaults to None.
+- `output` _Optional[str], optional_ - Output path for JSON file. Defaults to None.
 
 ![Plumes tweet gif](https://raw.githubusercontent.com/nnadeau/plumes/master/media/terminal-tweets.gif)
 
-### Prune Your Friends
+### Audit Users
+
+Audit and review users given criteria.
+Use this to mass follow/unfollow many users.
 
 ```bash
-plumes prune_friends PATH <flags>
+plumes audit_users PATH <flags>
 
-# e.g.,
+# e.g., follow 100 of Al Yankovic's followers
+plumes followers alyankovic --limit 100
+plumes audit_users alyankovic-followers.json --befriend
+
+# e.g., prune (i.e., unfollow) current friends who have less than 100 followers AND haven't tweeted in the last 30 days
 plumes friends --output "friends.json"
-plumes prune_friends "friends.json" --min_followers 100 --execute
+plumes audit_users "friends.json" --prune --min_followers 100 --days 30
 ```
 
-- `PATH`: path to JSON file exported from `plumes friends`
-- Optional flags:
-  - `--execute`: actually perform the pruning process, else a dry-run is performed
-  - `--days`: prune by number of days since last tweeted
-  - `--min_followers` / `--max_followers`: prune by number of followers
-  - `--min_friends` / `--max_friends`: prune by number of friends
-  - `--min_tweets` / `--max_tweets`: prune by number of tweets
-  - `--min_ratio` / `--max_ratio`: prune by Twitter follower-friend (TFF) ratio
+**Arguments**:
 
-![Prune friends gif](https://raw.githubusercontent.com/nnadeau/plumes/master/media/terminal-prune-friends.gif)
+- `path` _str_ - Path to JSON file of users (e.g., output of friends())
+- `min_followers` _Optional[int], optional_ - Min number of followers. Defaults to None.
+- `max_followers` _Optional[int], optional_ - Max number of followers. Defaults to None.
+- `min_friends` _Optional[int], optional_ - Min number of friends. Defaults to None.
+- `max_friends` _Optional[int], optional_ - Max number of friends. Defaults to None.
+- `days` _Optional[int], optional_ - Days since last tweet. Defaults to None.
+- `min_tweets` _Optional[int], optional_ - Min number of tweets. Defaults to None.
+- `max_tweets` _Optional[int], optional_ - Max number of tweets. Defaults to None.
+- `min_favourites` _Optional[int], optional_ - Min number of favourites. Defaults to None.
+- `max_favourites` _Optional[int], optional_ - Max number of favourites. Defaults to None.
+- `min_ratio` _Optional[float], optional_ - Min Twitter follower-friend (TFF) ratio. Defaults to None.
+- `max_ratio` _Optional[float], optional_ - Max Twitter follower-friend (TFF) ratio. Defaults to None.
+- `prune` _bool, optional_ - Unfollow identified users. Defaults to False.
+- `befriend` _bool, optional_ - Follow identified users. Defaults to False.
 
 ### Prune Your Tweets
 
-```bash
-plumes prune_tweets PATH <flags>
+Audit and review tweets given criteria.
+Use this to mass favourite or delete tweets.
 
-# e.g.,
+```bash
+plumes audit_tweets PATH <flags>
+
+# e.g., delete your tweets that are older than 60 days AND that you didn't self-favourite
 plumes tweets --output "tweets.json"
-plumes prune_tweets "tweets.json" --days 60 --protect_favorited --execute
+plumes audit_tweets "tweets.json" --prune --days 60 --self_favorited False
+
+# e.g., export 100 of Conan O'Brien's tweets and favourite those that have a maximum of 10 likes and a minimum of 50 retweets
+plumes tweets ConanOBrien --limit 100
+plumes audit_tweets ConanOBrien-tweets.json --favorite --max_likes 10 --min_retweets 50
 ```
 
-- `PATH`: path to JSON file exported from `plumes tweets`
-- Optional flags:
-  - `--execute`: actually perform the pruning process, else a dry-run is performed
-  - `--days`: prune age of tweet
-  - `--protect_favorited`: don't prune self-liked tweets
-  - `--min_likes` / `--max_likes`: prune by number of likes
-  - `--min_retweets` / `--max_retweets`: prune by number of retweets
-  - `--min_ratio` / `--max_ratio`: prune by Twitter like-retweet ratio
+**Arguments**:
+
+- `days` _Optional[int], optional_ - Days since tweeted. Defaults to None.
+- `min_likes` _Optional[int], optional_ - Min number of favourites. Defaults to None.
+- `max_likes` _Optional[int], optional_ - Max number of favourites. Defaults to None.
+- `min_retweets` _Optional[int], optional_ - Min number of retweets. Defaults to None.
+- `max_retweets` _Optional[int], optional_ - Max number of retweets. Defaults to None.
+- `min_ratio` _Optional[float], optional_ - Min Twitter like-retweet ratio. Defaults to None.
+- `max_ratio` _Optional[float], optional_ - Max Twitter like-retweet ratio. Defaults to None.
+- `self_favorited` _Optional[bool], optional_ - Check if tweet is self-liked. Defaults to None.
+- `prune` _bool, optional_ - Prune and destroy identified tweets. Defaults to False.
+- `favorite` _bool, optional_ - Like identified tweets. Defaults to False.
 
 ## Setting Up Authentication
 
