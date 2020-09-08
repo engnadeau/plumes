@@ -387,7 +387,11 @@ def audit_tweets(  # noqa C901
     if prune:  # pragma: no cover
         for t in identified_tweets:
             LOGGER.info(f"Deleting {t}")
-            pu.get_api().destroy_status(t)
+
+            try:
+                pu.get_api().destroy_status(t)
+            except tweepy.error.TweepError as e:
+                LOGGER.error(e)
     if favorite:  # pragma: no cover
         for t in identified_tweets:
             LOGGER.info(f"Favoriting {t}")
