@@ -394,7 +394,3 @@ def view_user(user: str):
 
 def main():
     fire.Fire()
-
-
-if __name__ == "__main__":
-    pass
