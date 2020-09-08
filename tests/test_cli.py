@@ -1,5 +1,3 @@
-import json
-
 import plumes.cli as pc
 
 
