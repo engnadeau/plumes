@@ -271,12 +271,20 @@ def audit_users(  # noqa C901
             failed_clauses.append(u["favourites_count"] > max_favourites)
 
         if min_ratio is not None:
-            actual_ratio = u["followers_count"] / u["friends_count"]
-            failed_clauses.append(actual_ratio < min_ratio)
+            failed_clauses.append(
+                pu.calculate_tff_ratio(
+                    followers=u["followers_count"], friends=u["friends_count"]
+                )
+                < min_ratio
+            )
 
         if max_ratio is not None:
-            actual_ratio = u["followers_count"] / u["friends_count"]
-            failed_clauses.append(actual_ratio > max_ratio)
+            failed_clauses.append(
+                pu.calculate_tff_ratio(
+                    followers=u["followers_count"], friends=u["friends_count"]
+                )
+                > max_ratio
+            )
 
         if len(failed_clauses) > 0 and all(failed_clauses):
             LOGGER.info(f"Identified {u['screen_name']}")
@@ -353,12 +361,20 @@ def audit_tweets(  # noqa C901
             failed_clauses.append(t["retweet_count"] > max_retweets)
 
         if min_ratio is not None:
-            actual_ratio = t["favorite_count"] / t["retweet_count"]
-            failed_clauses.append(actual_ratio < min_ratio)
+            failed_clauses.append(
+                pu.calculate_like_retweet_ratio(
+                    likes=t["favorite_count"], retweets=t["retweet_count"]
+                )
+                < min_ratio
+            )
 
         if max_ratio is not None:
-            actual_ratio = t["favorite_count"] / t["retweet_count"]
-            failed_clauses.append(actual_ratio > max_ratio)
+            failed_clauses.append(
+                pu.calculate_like_retweet_ratio(
+                    likes=t["favorite_count"], retweets=t["retweet_count"]
+                )
+                > max_ratio
+            )
 
         if self_favorited is not None:
             failed_clauses.append(t["favorited"] == self_favorited)
