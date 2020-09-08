@@ -77,3 +77,25 @@ def get_user(screen_name: Optional[str] = None):
     else:
         user = get_api().me()
     return user
+
+
+def calculate_like_retweet_ratio(likes: int, retweets: int) -> float:
+    if likes == 0:
+        ratio = 0
+    elif retweets == 0:
+        ratio = float("inf")
+    else:
+        ratio = likes / retweets
+
+    return ratio
+
+
+def calculate_tff_ratio(followers: int, friends: int) -> float:
+    if followers == 0:
+        ratio = 0
+    elif friends == 0:
+        ratio = float("inf")
+    else:
+        ratio = followers / friends
+
+    return ratio
