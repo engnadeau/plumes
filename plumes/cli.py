@@ -157,6 +157,37 @@ def followers(
     )
 
 
+def favorites(
+    screen_name: Optional[str] = None,
+    limit: Optional[int] = None,
+    output: Optional[str] = None,
+):
+    """Get JSON array of favourited tweets.
+
+    Args:
+        screen_name (Optional[str], optional): Target user's screen name (i.e., Twitter handle). If none is given, authenticated user is used. Defaults to None.
+        limit (Optional[int], optional): Max number of users to fetch. Defaults to None.
+        output (Optional[str], optional): Output path for JSON file. Defaults to None.
+    """
+    # get api and user object
+    api = pu.get_api()
+    source_user = pu.get_user(screen_name=screen_name)
+
+    # check limit for progress bar
+    if not limit:  # pragma: no cover
+        limit = source_user.statuses_count
+
+    # ensure output location
+    fname = f"{source_user.screen_name}-favorites.json"
+    path = pu.set_output(fname=fname, path=output)
+
+    # get tweets
+    LOGGER.info(f"Fetching {limit} favourited tweets")
+    pu.get_tweepy_objects(
+        func=api.favorites, screen_name=screen_name, output=path, total=limit
+    )
+
+
 def tweets(
     screen_name: Optional[str] = None,
     limit: Optional[int] = None,
