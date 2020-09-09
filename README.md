@@ -176,6 +176,7 @@ plumes audit_users "friends.json" --prune --min_followers 100 --days 30
 - `max_ratio` _Optional[float], optional_ - Max Twitter follower-friend (TFF) ratio. Defaults to None.
 - `prune` _bool, optional_ - Unfollow identified users. Defaults to False.
 - `befriend` _bool, optional_ - Follow identified users. Defaults to False.
+- `bool_or` _bool, optional_ - Switch to boolean OR for conditions. Defaults to False.
 
 ### Prune Your Tweets
 
@@ -206,6 +207,7 @@ plumes audit_tweets ConanOBrien-tweets.json --favorite --max_likes 10 --min_retw
 - `self_favorited` _Optional[bool], optional_ - Check if tweet is self-liked. Defaults to None.
 - `prune` _bool, optional_ - Prune and destroy identified tweets. Defaults to False.
 - `favorite` _bool, optional_ - Like identified tweets. Defaults to False.
+- `bool_or` _bool, optional_ - Switch to boolean OR for conditions. Defaults to False.
 
 ## Setting Up Authentication
 
