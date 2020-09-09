@@ -13,6 +13,7 @@ check-format:
 .PHONY: lint
 lint:
 	poetry run flake8 .
+	poetry run pydocstyle .
 
 .PHONY: test
 test:
