@@ -325,7 +325,11 @@ def audit_users(  # noqa C901
     if prune:  # pragma: no cover
         for u in identified_users:
             LOGGER.info(f"Unfollowing {u}")
-            pu.get_api().destroy_friendship(u)
+
+            try:
+                pu.get_api().destroy_friendship(u)
+            except tweepy.error.TweepError as e:
+                LOGGER.error(e)
     if befriend:  # pragma: no cover
         for u in identified_users:
             LOGGER.info(f"Following {u}")
