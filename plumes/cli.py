@@ -336,7 +336,10 @@ def audit_users(  # noqa C901
     if befriend:  # pragma: no cover
         for u in identified_users:
             LOGGER.info(f"Following {u}")
-            pu.get_api().create_friendship(u)
+            try:
+                pu.get_api().create_friendship(u)
+            except tweepy.error.TweepError as e:
+                LOGGER.error(e)
 
 
 def audit_tweets(  # noqa C901
