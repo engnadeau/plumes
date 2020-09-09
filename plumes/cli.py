@@ -203,6 +203,7 @@ def audit_users(  # noqa C901
     max_ratio: Optional[float] = None,
     prune: bool = False,
     befriend: bool = False,
+    bool_or: bool = False,
 ):
     """Audit and review users given criteria
 
@@ -221,6 +222,7 @@ def audit_users(  # noqa C901
         max_ratio (Optional[float], optional): Max Twitter follower-friend (TFF) ratio. Defaults to None.
         prune (bool, optional): Unfollow identified users. Defaults to False.
         befriend (bool, optional): Follow identified users. Defaults to False.
+        bool_or (bool, optional): Switch to boolean OR for conditions. Defaults to False.
     """
 
     # load users data
@@ -286,9 +288,10 @@ def audit_users(  # noqa C901
                 > max_ratio
             )
 
-        if len(failed_clauses) > 0 and all(failed_clauses):
-            LOGGER.info(f"Identified {u['screen_name']}")
-            identified_users.add(u["screen_name"])
+        if len(failed_clauses) > 0:
+            if (bool_or and any(failed_clauses)) or all(failed_clauses):
+                LOGGER.info(f"Identified {u['screen_name']}")
+                identified_users.add(u["screen_name"])
 
     LOGGER.info(f"Identified {len(identified_users)} users")
     if prune:  # pragma: no cover
@@ -313,6 +316,7 @@ def audit_tweets(  # noqa C901
     self_favorited: Optional[bool] = None,
     prune: bool = False,
     favorite: bool = False,
+    bool_or: bool = False,
 ):
     """Audit and review tweets given criteria
 
@@ -327,6 +331,7 @@ def audit_tweets(  # noqa C901
         self_favorited (Optional[bool], optional): Check if tweet is self-liked. Defaults to None.
         prune (bool, optional): Prune and destroy identified tweets. Defaults to False.
         favorite (bool, optional): Like identified tweets. Defaults to False.
+        bool_or (bool, optional): Switch to boolean OR for conditions. Defaults to False.
     """
     # load data
     path = Path(path)
@@ -379,9 +384,10 @@ def audit_tweets(  # noqa C901
         if self_favorited is not None:
             failed_clauses.append(t["favorited"] == self_favorited)
 
-        if len(failed_clauses) > 0 and all(failed_clauses):
-            LOGGER.info(f'Identified "{text}"')
-            identified_tweets.add(t["id_str"])
+        if len(failed_clauses) > 0:
+            if (bool_or and any(failed_clauses)) or all(failed_clauses):
+                LOGGER.info(f'Identified "{text}"')
+                identified_tweets.add(t["id_str"])
 
     LOGGER.info(f"Identified {len(identified_tweets)} tweets")
     if prune:  # pragma: no cover
