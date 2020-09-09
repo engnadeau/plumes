@@ -17,6 +17,10 @@ def test_tweets():
     pc.tweets(limit=10)
 
 
+def test_favorites():
+    pc.favorites(limit=10)
+
+
 def test_init(tmp_path):
     # test basic function
     pc.init()
