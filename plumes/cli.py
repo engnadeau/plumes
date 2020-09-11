@@ -95,6 +95,38 @@ def view_config():  # pragma: no cover
     )
 
 
+def befriend_user(screen_name: str):
+    LOGGER.info(f"Following {screen_name}")
+    try:
+        pu.get_api().create_friendship(screen_name)
+    except tweepy.error.TweepError as e:
+        LOGGER.error(e)
+
+
+def unfollow_user(screen_name: str):
+    LOGGER.info(f"Unfollowing {screen_name}")
+    try:
+        pu.get_api().destroy_friendship(screen_name)
+    except tweepy.error.TweepError as e:
+        LOGGER.error(e)
+
+
+def favorite_tweet(tweet_id: str):
+    LOGGER.info(f"Favoriting {tweet_id}")
+    try:
+        pu.get_api().create_favorite(tweet_id)
+    except tweepy.error.TweepError as e:
+        LOGGER.error(e)
+
+
+def delete_tweet(tweet_id: str):
+    LOGGER.info(f"Deleting {tweet_id}")
+    try:
+        pu.get_api().destroy_status(tweet_id)
+    except tweepy.error.TweepError as e:
+        LOGGER.error(e)
+
+
 def friends(
     screen_name: Optional[str] = None,
     limit: Optional[int] = None,
