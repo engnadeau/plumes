@@ -266,7 +266,7 @@ def audit_users(  # noqa C901
     identified_users = set()
 
     # iterate and identify prunable users
-    for u in users:
+    for u in sorted(users, key=lambda x: x["screen_name"].lower()):
         failed_clauses = []
 
         if min_followers is not None:
