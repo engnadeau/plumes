@@ -95,6 +95,38 @@ def view_config():  # pragma: no cover
     )
 
 
+def befriend_user(screen_name: str):
+    LOGGER.info(f"Following {screen_name}")
+    try:
+        pu.get_api().create_friendship(screen_name)
+    except tweepy.error.TweepError as e:
+        LOGGER.error(e)
+
+
+def unfollow_user(screen_name: str):
+    LOGGER.info(f"Unfollowing {screen_name}")
+    try:
+        pu.get_api().destroy_friendship(screen_name)
+    except tweepy.error.TweepError as e:
+        LOGGER.error(e)
+
+
+def favorite_tweet(tweet_id: str):
+    LOGGER.info(f"Favoriting {tweet_id}")
+    try:
+        pu.get_api().create_favorite(tweet_id)
+    except tweepy.error.TweepError as e:
+        LOGGER.error(e)
+
+
+def delete_tweet(tweet_id: str):
+    LOGGER.info(f"Deleting {tweet_id}")
+    try:
+        pu.get_api().destroy_status(tweet_id)
+    except tweepy.error.TweepError as e:
+        LOGGER.error(e)
+
+
 def friends(
     screen_name: Optional[str] = None,
     limit: Optional[int] = None,
@@ -327,19 +359,10 @@ def audit_users(  # noqa C901
     LOGGER.info(f"Identified {len(identified_users)} users")
     if prune:  # pragma: no cover
         for u in identified_users:
-            LOGGER.info(f"Unfollowing {u}")
-
-            try:
-                pu.get_api().destroy_friendship(u)
-            except tweepy.error.TweepError as e:
-                LOGGER.error(e)
+            unfollow_user(u)
     if befriend:  # pragma: no cover
         for u in identified_users:
-            LOGGER.info(f"Following {u}")
-            try:
-                pu.get_api().create_friendship(u)
-            except tweepy.error.TweepError as e:
-                LOGGER.error(e)
+            befriend_user(u)
 
 
 def audit_tweets(  # noqa C901
@@ -430,16 +453,10 @@ def audit_tweets(  # noqa C901
     LOGGER.info(f"Identified {len(identified_tweets)} tweets")
     if prune:  # pragma: no cover
         for t in identified_tweets:
-            LOGGER.info(f"Deleting {t}")
-
-            try:
-                pu.get_api().destroy_status(t)
-            except tweepy.error.TweepError as e:
-                LOGGER.error(e)
+            delete_tweet(t)
     if favorite:  # pragma: no cover
         for t in identified_tweets:
-            LOGGER.info(f"Favoriting {t}")
-            pu.get_api().create_favorite(t)
+            favorite_tweet(t)
 
 
 def view_user(user: str):

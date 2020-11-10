@@ -48,6 +48,9 @@
   - [Export Tweets](#export-tweets)
   - [Audit Users](#audit-users)
   - [Prune Your Tweets](#prune-your-tweets)
+- [Advanced Usage and Chaining](#advanced-usage-and-chaining)
+  - [Extracting Screen Names of Retweeted Statuses](#extracting-screen-names-of-retweeted-statuses)
+  - [Batch Follow Users of Retweeted Statuses](#batch-follow-users-of-retweeted-statuses)
 - [Setting Up Authentication](#setting-up-authentication)
   - [Get Your Twitter API Tokens](#get-your-twitter-api-tokens)
   - [Configuring `plumes`](#configuring-plumes)
@@ -208,6 +211,30 @@ plumes audit_tweets ConanOBrien-tweets.json --favorite --max_likes 10 --min_retw
 - `prune` _bool, optional_ - Prune and destroy identified tweets. Defaults to False.
 - `favorite` _bool, optional_ - Like identified tweets. Defaults to False.
 - `bool_or` _bool, optional_ - Switch to boolean OR for conditions. Defaults to False.
+
+## Advanced Usage and Chaining
+
+Using the wonderful [`fx`](https://github.com/antonmedv/fx), we can filter and extract values from the JSON output of `plumes` to be reused and chained into other functions.
+
+### Extracting Screen Names of Retweeted Statuses
+
+```bash
+fx tweets.json '.filter(x=>x.retweeted_status)' '.map(x=>x.retweeted_status.user.screen_name)'
+```
+
+- `fx tweets.json`: parse export of tweets
+- `.filter(x=>x.retweeted_status)`: for each status (i.e., tweet), filter out non-retweeted statuses (`retweeted_status == null`)
+- `.map(x=>x.retweeted_status.user.screen_name)`: for each status, extract `screen_name` of `user` in `retweeted_status`, creating a new array
+
+### Batch Follow Users of Retweeted Statuses
+
+```bash
+for U in $(fx tweets.json '.filter(x=>x.retweeted_status)' '.map(x=>x.retweeted_status.user.screen_name)' '.join("\n")'); do plumes befriend_user $U; done
+```
+
+- `.join("\n")`: since `bash` likes line separators for for-loops, we join the array using a newline
+- `for U in $(...); do ...; done`: for-loop that takes each user from the list provided
+- `plumes befriend_user $U`: befriend the user stored in variable `$U`
 
 ## Setting Up Authentication
 
